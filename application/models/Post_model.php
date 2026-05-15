@@ -18,4 +18,17 @@ class Post_model extends CI_Model
 
     return $query->row_array();
   }
+
+  public function create_post()
+  {
+    $slug = url_title($this->input->post('tile'));
+
+    $data = array(
+      'tile' => $this->input->post('tile'),
+      'slug' => $slug,
+      'body' => $this->input->post('body')
+    );
+
+    return $this->db->insert('post', $data);
+  }
 }
