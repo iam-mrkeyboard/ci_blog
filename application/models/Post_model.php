@@ -10,6 +10,7 @@ class Post_model extends CI_Model
   public  function get_posts($slug = false)
   {
     if ($slug === false) {
+      $this->db->order_by('id', 'DESC');
       $query = $this->db->get('post');
       return $query->result_array();
     }
@@ -30,5 +31,28 @@ class Post_model extends CI_Model
     );
 
     return $this->db->insert('post', $data);
+  }
+
+  public function delete_post($id)
+  {
+    $this->db->where('id', $id);
+    $this->db->delete('post');
+
+    return true;
+  }
+
+  public function update_post()
+  {
+    $slug = url_title($this->input->post('tile'));
+
+    $data = array(
+      'tile' => $this->input->post('tile'),
+      'slug' => $slug,
+      'body' => $this->input->post('body')
+    );
+
+    $this->db->where('id', $this->input->post('id'));
+
+    return $this->db->update('post', $data);
   }
 }
